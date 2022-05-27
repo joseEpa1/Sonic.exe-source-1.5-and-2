@@ -1938,7 +1938,11 @@ class PlayState extends MusicBeatState
 		kadeEngineWatermark.cameras = [camHUD];
 		if (loadRep)
 			replayTxt.cameras = [camHUD];
-
+					
+                #if android
+		addAndroidControls();
+		#end
+			
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
@@ -2868,7 +2872,9 @@ class PlayState extends MusicBeatState
 	}
 
 	function startCountdown():Void
-	{
+	{       #if android
+		androidc.visible = true;
+	        #end
 		FlxG.log.add(storyPlaylist);
 
 		ezTrail = new FlxTrail(dad, null, 2, 5, 0.3, 0.04);
@@ -4981,14 +4987,14 @@ class PlayState extends MusicBeatState
 		if (isStoryMode)
 			campaignMisses = misses;
 
-		if (!loadRep)
+		/*if (!loadRep)
 			rep.SaveReplay(saveNotes, saveJudge, replayAna);
 		else
 		{
 			PlayStateChangeables.botPlay = false;
 			PlayStateChangeables.scrollSpeed = 1;
 			PlayStateChangeables.useDownscroll = false;
-		}
+		}*/
 
 		if (FlxG.save.data.fpsCap > 290)
 			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
@@ -5057,9 +5063,9 @@ class PlayState extends MusicBeatState
 
 					if (curSong == 'triple-trouble')
 					{
-						var video:MP4Handler = new MP4Handler();
+						/*var video:MP4Handler = new MP4Handler();
 						video.playMP4(Paths.video('soundtestcodes'));
-						video.finishCallback = function()
+						video.finishCallback = function()*/
 						{
 							LoadingState.loadAndSwitchState(new MainMenuState());
 						}
@@ -5078,9 +5084,10 @@ class PlayState extends MusicBeatState
 					// if ()
 
 					if (SONG.validScore)
-					{
+					{       #if newgrounds
 						NGio.unlockMedal(60961);
 						Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
+					        #end
 					}
 
 					FlxG.save.flush();
@@ -5182,23 +5189,23 @@ class PlayState extends MusicBeatState
 							FlxG.switchState(new FreeplayState());
 						}
 					case 'too-slow':
-						var video:MP4Handler = new MP4Handler();
+						/*var video:MP4Handler = new MP4Handler();
 						video.playMP4(Paths.video('tooslowcutscene2'));
-						video.finishCallback = function()
+						video.finishCallback = function()*/
 						{
 							LoadingState.loadAndSwitchState(new MainMenuState());
 						}
 					case 'you-cant-run':
-						var video:MP4Handler = new MP4Handler();
+						/*var video:MP4Handler = new MP4Handler();
 						video.playMP4(Paths.video('youcantruncutscene2'));
-						video.finishCallback = function()
+						video.finishCallback = function()*/
 						{
 							LoadingState.loadAndSwitchState(new MainMenuState());
 						}
 					case 'triple-trouble':
-						var video:MP4Handler = new MP4Handler();
+						/*var video:MP4Handler = new MP4Handler();
 						video.playMP4(Paths.video('soundtestcodes'));
-						video.finishCallback = function()
+						video.finishCallback = function()*/
 						{
 							LoadingState.loadAndSwitchState(new MainMenuState());
 						}
@@ -5569,14 +5576,14 @@ class PlayState extends MusicBeatState
 			pressArray = [
 				controls.LEFT_P,
 				controls.DOWN_P,
-				controls.SPACE_P,
+				controls.UP_P,
 				controls.UP_P,
 				controls.RIGHT_P
 			];
 			releaseArray = [
 				controls.LEFT_R,
 				controls.DOWN_R,
-				controls.SPACE_R,
+				controls.UP_R,
 				controls.UP_R,
 				controls.RIGHT_R
 			];
@@ -5622,16 +5629,10 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var anas:Array<Ana> = [null, null, null, null];
-		if (isRing)
-		{
-			anas = [null, null, null, null, null];
-		}
-
 		for (i in 0...pressArray.length)
 			if (pressArray[i])
 				anas[i] = new Ana(Conductor.songPosition, null, false, "miss", i);
-
+  
 		// HOLDS, check for sustain notes
 		if (holdArray.contains(true) && /*!boyfriend.stunned && */ generatedMusic)
 		{
@@ -5641,12 +5642,10 @@ class PlayState extends MusicBeatState
 					goodNoteHit(daNote);
 			});
 		}
-
-		if (KeyBinds.gamepad && !FlxG.keys.justPressed.ANY)
+		
+		// PRESSES, check for note hits
+		]if (pressArray.contains(true) && generatedMusic)
 		{
-			// PRESSES, check for note hits
-			if (pressArray.contains(true) && generatedMusic)
-			{
 				boyfriend.holdTimer = 0;
 
 				var possibleNotes:Array<Note> = []; // notes that can be hit
@@ -5719,9 +5718,9 @@ class PlayState extends MusicBeatState
 								mashViolations--;
 							scoreTxt.color = FlxColor.WHITE;
 							var noteDiff:Float = -(coolNote.strumTime - Conductor.songPosition);
-							anas[coolNote.noteData].hit = true;
-							anas[coolNote.noteData].hitJudge = Ratings.CalculateRating(noteDiff, Math.floor((PlayStateChangeables.safeFrames / 60) * 1000));
-							anas[coolNote.noteData].nearestNote = [coolNote.strumTime, coolNote.noteData, coolNote.sustainLength];
+					//		anas[coolNote.noteData].hit = true;
+					//		anas[coolNote.noteData].hitJudge = Ratings.CalculateRating(noteDiff, Math.floor((PlayStateChangeables.safeFrames / 60) * 1000));
+					//		anas[coolNote.noteData].nearestNote = [coolNote.strumTime, coolNote.noteData, coolNote.sustainLength];
 							goodNoteHit(coolNote);
 						}
 					}
@@ -5734,10 +5733,10 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			if (!loadRep)
+			/*if (!loadRep)
 				for (i in anas)
 					if (i != null)
-						replayAna.anaArray.push(i); // put em all there
+						replayAna.anaArray.push(i); // put em all there*/
 		}
 		notes.forEachAlive(function(daNote:Note)
 		{
