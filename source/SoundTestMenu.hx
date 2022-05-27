@@ -127,7 +127,9 @@ class SoundTestMenu extends MusicBeatState
 
 			add(whiteshit);
 
-			
+			#if android
+			addVirtualPad(FULL, A_B);
+		        #end
         }
 
 	function changeNumber(selection:Int) 
@@ -356,7 +358,7 @@ class SoundTestMenu extends MusicBeatState
 				});
 				new FlxTimer().start(2.1, function(tmr:FlxTimer)
 				{
-                	video.playMP4(Paths.video('Keel'));
+               //	video.playMP4(Paths.video('Keel'));
 					incameo = true;
 				});
 			}
@@ -373,7 +375,7 @@ class SoundTestMenu extends MusicBeatState
 				});
 				new FlxTimer().start(2.1, function(tmr:FlxTimer)
 				{
-                	video.playMP4(Paths.video('Milky'));
+           //     	video.playMP4(Paths.video('Milky'));
 					incameo = true;
 				});
 			}
@@ -412,15 +414,15 @@ class SoundTestMenu extends MusicBeatState
 		
 	override public function update(elapsed:Float)
 		{
-			if (FlxG.keys.justPressed.RIGHT || FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A || FlxG.keys.justPressed.D) if (woahmanstopspammin) funnymonke = !funnymonke;
+			if (controls.LEFT || FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.A || FlxG.keys.justPressed.D) if (woahmanstopspammin) funnymonke = !funnymonke;
 
-			if (FlxG.keys.justPressed.DOWN || FlxG.keys.justPressed.S) if (woahmanstopspammin) changeNumber(1);
+			if (controls.DOWN || FlxG.keys.justPressed.S) if (woahmanstopspammin) changeNumber(1);
 
-			if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.W) if (woahmanstopspammin) changeNumber(-1);
+			if (controls.UP || FlxG.keys.justPressed.W) if (woahmanstopspammin) changeNumber(-1);
 
-			if (FlxG.keys.justPressed.ENTER && woahmanstopspammin) doTheThing(pcmValue, daValue);
+			if (controls.RIGHT && woahmanstopspammin) doTheThing(pcmValue, daValue);
 
-			if (FlxG.keys.justPressed.ENTER && !woahmanstopspammin && incameo) LoadingState.loadAndSwitchState(new SoundTestMenu());
+			if (controls.ACCEPT && !woahmanstopspammin && incameo) LoadingState.loadAndSwitchState(new SoundTestMenu());
 
 			if (FlxG.keys.justPressed.ESCAPE && woahmanstopspammin && !incameo) LoadingState.loadAndSwitchState(new MainMenuState());
 
