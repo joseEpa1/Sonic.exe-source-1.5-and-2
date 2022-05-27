@@ -22,7 +22,9 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+#if newgrounds
 import io.newgrounds.NG;
+#end
 import lime.app.Application;
 import openfl.Assets;
 
@@ -60,13 +62,13 @@ class TitleState extends MusicBeatState
 		FlxG.worldBounds.set(0, 0);
 
 		#if polymod
-		polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
+		//polymod.Polymod.init({modRoot: "mods", dirs: ['introMod']});
 		#end
 
-		#if sys
+		/*#if sys
 		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
 			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
-		#end
+		#end*/
 
 		@:privateAccess
 		{
@@ -309,7 +311,7 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro && code != 4)
 		{
-			#if !switch
+			#if (!switch && newgrounds)
 			NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
@@ -343,9 +345,9 @@ class TitleState extends MusicBeatState
 				var http = new haxe.Http("https://raw.githubusercontent.com/KadeDev/Kade-Engine/master/version.downloadMe");
 				var returnedData:Array<String> = [];
 
-				var video:MP4Handler = new MP4Handler();
+				/*var video:MP4Handler = new MP4Handler();
 				video.playMP4(Paths.video('bothCreditsAndIntro'));
-				video.finishCallback = function()
+				video.finishCallback = function()*/
 				{
 					LoadingState.loadAndSwitchState(new MainMenuState());
 				}
