@@ -83,7 +83,7 @@ class VideoHandlerMP4
 	{
 		finishCallback = callback;
 
-		vlcBitmap = new VlcBitmap();
+		/*vlcBitmap = new VlcBitmap();
 		vlcBitmap.onVideoReady = onVLCVideoReady;
 		vlcBitmap.onComplete = onVLCComplete;
 		vlcBitmap.volume = FlxG.sound.volume;
@@ -97,7 +97,7 @@ class VideoHandlerMP4
 		vlcBitmap.fullscreen = isFullscreen;
 
 		FlxG.addChildBelowMouse(vlcBitmap);
-		vlcBitmap.play(checkFile(path));
+		vlcBitmap.play(checkFile(path));*/
 	}
 
 	function checkFile(fileName:String):String
@@ -121,7 +121,7 @@ class VideoHandlerMP4
 
 	function onVLCComplete()
 	{
-		vlcBitmap.stop();
+		//vlcBitmap.stop();
 
 		// Clean player, just in case!
 		//vlcBitmap.dispose();
